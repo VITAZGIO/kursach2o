@@ -1,0 +1,14 @@
+@model FurnitureItem
+@{
+    ViewData["Title"] = "Удалить мебель";
+}
+
+<h1>Удалить мебель</h1>
+<div class="content-block">
+    <p>Вы действительно хотите удалить товар <strong>@Model.Name</strong>?</p>
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="Id" />
+        <button class="btn danger" type="submit">Удалить</button>
+        <a class="btn secondary" asp-action="Index">Назад</a>
+    </form>
+</div>

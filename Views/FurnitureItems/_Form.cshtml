@@ -1,0 +1,56 @@
+@model FurnitureItem
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<input type="hidden" asp-for="Id" />
+<div class="form-row">
+    <label asp-for="Name"></label>
+    <input asp-for="Name" />
+    <span asp-validation-for="Name" class="text-danger"></span>
+</div>
+<div class="form-row">
+    <label asp-for="Article"></label>
+    <input asp-for="Article" />
+    <span asp-validation-for="Article" class="text-danger"></span>
+</div>
+<div class="form-row">
+    <label asp-for="Description"></label>
+    <textarea asp-for="Description"></textarea>
+</div>
+<div class="form-row">
+    <label asp-for="Material"></label>
+    <input asp-for="Material" />
+</div>
+<div class="form-row">
+    <label asp-for="Color"></label>
+    <input asp-for="Color" />
+</div>
+<div class="form-row">
+    <label asp-for="Size"></label>
+    <input asp-for="Size" />
+</div>
+<div class="form-row">
+    <label asp-for="Price"></label>
+    <input asp-for="Price" />
+</div>
+<div class="form-row">
+    <label asp-for="StockQuantity"></label>
+    <input asp-for="StockQuantity" />
+</div>
+<div class="form-row">
+    <label for="photo">Фото мебели</label>
+    <input id="photo" name="photo" type="file" accept=".jpg,.jpeg,.png,.webp" />
+    <input asp-for="ImagePath" type="hidden" />
+    <span asp-validation-for="ImagePath" class="text-danger"></span>
+    @if (!string.IsNullOrWhiteSpace(Model?.ImagePath))
+    {
+        <p>Текущее фото: @Model.ImagePath</p>
+    }
+</div>
+<div class="form-row">
+    <label asp-for="CategoryId"></label>
+    <select asp-for="CategoryId" asp-items="ViewBag.CategoryId"></select>
+</div>
+<div class="form-row">
+    <label asp-for="ManufacturerId"></label>
+    <select asp-for="ManufacturerId" asp-items="ViewBag.ManufacturerId"></select>
+</div>

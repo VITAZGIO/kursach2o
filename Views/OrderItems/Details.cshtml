@@ -1,0 +1,4 @@
+@model OrderItem
+@{ ViewData["Title"] = "Подробнее"; }
+<h1>Позиция заказа</h1>
+<div class="content-block"><dl class="details-list"><dt>Заказ</dt><dd>№@Model.OrderId</dd><dt>Мебель</dt><dd>@Model.FurnitureItem?.Name</dd><dt>Количество</dt><dd>@Model.Quantity</dd><dt>Цена</dt><dd>@Model.UnitPrice.ToString("N2") ₽</dd></dl><a class="btn" asp-action="Edit" asp-route-id="@Model.Id">Изменить</a> <a class="btn secondary" asp-controller="Orders" asp-action="Details" asp-route-id="@Model.OrderId">Назад</a></div>

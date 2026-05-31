@@ -1,0 +1,11 @@
+@model FurnitureItem
+@{
+    ViewData["Title"] = "Добавить мебель";
+}
+
+<h1>Добавить мебель</h1>
+<form asp-action="Create" method="post" enctype="multipart/form-data" class="form">
+    <partial name="_Form" model="Model" />
+    <button class="btn" type="submit">Добавить</button>
+    <a class="btn secondary" asp-action="Index">Назад</a>
+</form>

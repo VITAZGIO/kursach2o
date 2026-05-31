@@ -1,0 +1,14 @@
+@model Category
+@{ ViewData["Title"] = "Подробнее"; }
+<h1>@Model.Name</h1>
+<div class="content-block">
+    <dl class="details-list">
+        <dt>Название</dt><dd>@Model.Name</dd>
+        <dt>Описание</dt><dd>@Model.Description</dd>
+    </dl>
+    @if (Context.Session.GetString("Role") == "Admin")
+    {
+        <a class="btn" asp-action="Edit" asp-route-id="@Model.Id">Изменить</a>
+    }
+    <a class="btn secondary" asp-action="Index">Назад</a>
+</div>

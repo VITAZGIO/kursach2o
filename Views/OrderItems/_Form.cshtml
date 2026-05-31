@@ -1,0 +1,7 @@
+@model OrderItem
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<input type="hidden" asp-for="Id" />
+<div class="form-row"><label asp-for="OrderId"></label><select asp-for="OrderId" asp-items="ViewBag.OrderId"></select></div>
+<div class="form-row"><label asp-for="FurnitureItemId"></label><select asp-for="FurnitureItemId" asp-items="ViewBag.FurnitureItemId"></select></div>
+<div class="form-row"><label asp-for="Quantity"></label><input asp-for="Quantity" /></div>
+<div class="form-row"><label asp-for="UnitPrice"></label><input asp-for="UnitPrice" /></div>

@@ -1,0 +1,4 @@
+@model Order
+@{ ViewData["Title"] = "Изменить заказ"; }
+<h1>Изменить заказ</h1>
+<form asp-action="Edit" method="post" class="form"><partial name="_Form" model="Model" /><button class="btn" type="submit">Сохранить</button> <a class="btn secondary" asp-action="Index">Назад</a></form>

@@ -1,0 +1,76 @@
+@model CartViewModel
+@{
+    ViewData["Title"] = "Корзина";
+}
+
+<h1>Корзина</h1>
+
+@if (TempData["CartSuccess"] != null)
+{
+    <div class="message">@TempData["CartSuccess"]</div>
+}
+@if (TempData["CartError"] != null)
+{
+    <div class="message error">@TempData["CartError"]</div>
+}
+
+@if (!Model.Items.Any())
+{
+    <div class="content-block">
+        <p>Корзина пуста.</p>
+        <a class="btn" asp-controller="FurnitureItems" asp-action="Index">Перейти в каталог</a>
+    </div>
+}
+else
+{
+    <table class="table cart-table">
+        <thead>
+            <tr>
+                <th>Фото</th>
+                <th>Товар</th>
+                <th>Цена</th>
+                <th>Количество</th>
+                <th>Сумма</th>
+                <th class="cart-actions-cell">Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.Items)
+        {
+            var price = item.FurnitureItem?.Price ?? 0;
+            <tr>
+                <td><img class="thumb" src="@(string.IsNullOrWhiteSpace(item.FurnitureItem?.ImagePath) ? "/images/Sofa.jpg" : item.FurnitureItem.ImagePath)" alt="@item.FurnitureItem?.Name" /></td>
+                <td>@item.FurnitureItem?.Name</td>
+                <td class="nowrap">@price.ToString("N2") ₽</td>
+                <td class="nowrap">@item.Quantity</td>
+                <td class="nowrap">@((item.Quantity * price).ToString("N2")) ₽</td>
+                <td class="cart-actions-cell">
+                    <div class="cart-actions">
+                        <form asp-action="ChangeQuantity" method="post">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <input type="hidden" name="delta" value="1" />
+                            <button class="btn secondary btn-small" type="submit">+</button>
+                        </form>
+                        <form asp-action="ChangeQuantity" method="post">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <input type="hidden" name="delta" value="-1" />
+                            <button class="btn secondary btn-small" type="submit">-</button>
+                        </form>
+                        <form asp-action="Remove" method="post">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <button class="btn danger" type="submit">Удалить</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    <div class="content-block">
+        <h2>Итого: @Model.TotalAmount.ToString("N2") ₽</h2>
+        <form asp-action="Checkout" method="post">
+            <button class="btn" type="submit">Оформить заказ</button>
+            <a class="btn secondary" asp-controller="FurnitureItems" asp-action="Index">Продолжить покупки</a>
+        </form>
+    </div>
+}

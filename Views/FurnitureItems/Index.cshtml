@@ -1,0 +1,71 @@
+@model IEnumerable<FurnitureItem>
+@{
+    ViewData["Title"] = "Каталог";
+    var role = Context.Session.GetString("Role");
+    var isAdmin = role == "Admin";
+    var isUser = role == "User";
+}
+
+<div class="toolbar">
+    <h1>Каталог</h1>
+    @if (isAdmin)
+    {
+        <a class="btn" asp-action="Create">Добавить</a>
+    }
+</div>
+
+<form class="search-form" asp-action="Index" method="get">
+    <input name="search" value="@ViewBag.Search" placeholder="Поиск по названию, артикулу или производителю" />
+    <button class="btn" type="submit">Найти</button>
+    <a class="btn secondary" asp-action="Index">Сброс</a>
+</form>
+
+<table class="table catalog-table">
+    <thead>
+        <tr>
+            <th class="table-photo">Фото</th>
+            <th>Название</th>
+            <th>Артикул</th>
+            <th>Категория</th>
+            <th>Производитель</th>
+            <th>Материал</th>
+            <th>Цвет</th>
+            <th class="nowrap">Цена</th>
+            <th class="nowrap">Остаток</th>
+            <th class="table-actions-col">Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td class="table-photo"><img class="thumb" src="@(string.IsNullOrWhiteSpace(item.ImagePath) ? "/images/Sofa.jpg" : item.ImagePath)" alt="@item.Name" /></td>
+            <td>@item.Name</td>
+            <td class="nowrap">@item.Article</td>
+            <td>@item.Category?.Name</td>
+            <td>@item.Manufacturer?.Name</td>
+            <td>@item.Material</td>
+            <td>@item.Color</td>
+            <td class="nowrap">@item.Price.ToString("N2") ₽</td>
+            <td class="nowrap">@item.StockQuantity</td>
+            <td class="table-actions-col">
+                <div class="table-actions">
+                    <a class="btn secondary" asp-action="Details" asp-route-id="@item.Id">Подробнее</a>
+                    @if (isAdmin)
+                    {
+                        <a class="btn secondary" asp-action="Edit" asp-route-id="@item.Id">Изменить</a>
+                        <a class="btn danger" asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+                    }
+                    @if (isUser)
+                    {
+                        <form asp-controller="Cart" asp-action="Add" method="post">
+                            <input type="hidden" name="furnitureItemId" value="@item.Id" />
+                            <button class="btn" type="submit">В корзину</button>
+                        </form>
+                    }
+                </div>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

@@ -1,0 +1,7 @@
+@model Manufacturer
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<input type="hidden" asp-for="Id" />
+<div class="form-row"><label asp-for="Name"></label><input asp-for="Name" /><span asp-validation-for="Name" class="text-danger"></span></div>
+<div class="form-row"><label asp-for="Country"></label><input asp-for="Country" /></div>
+<div class="form-row"><label asp-for="Phone"></label><input asp-for="Phone" /></div>
+<div class="form-row"><label asp-for="Email"></label><input asp-for="Email" /><span asp-validation-for="Email" class="text-danger"></span></div>

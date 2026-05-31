@@ -1,0 +1,12 @@
+services:
+  furniture-shop:
+    build: .
+    container_name: furniture-shop
+    ports:
+      - "5000:8080"
+    restart: unless-stopped
+    volumes:
+      - ./data:/app/data
+      - ./wwwroot/uploads:/app/wwwroot/uploads
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production

@@ -1,0 +1,41 @@
+@model IEnumerable<Order>
+@{
+    ViewData["Title"] = "Заказы";
+}
+
+<div class="toolbar">
+    <h1>Заказы в обработке</h1>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Номер заказа</th>
+            <th>Клиент</th>
+            <th>Дата</th>
+            <th>Статус</th>
+            <th>Сумма</th>
+            <th class="table-actions-col">Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td class="nowrap">№@item.Id</td>
+            <td>@item.Customer?.FullName</td>
+            <td class="nowrap">@item.OrderDate.ToString("dd.MM.yyyy")</td>
+            <td><span class="status-badge status-processing">@item.Status</span></td>
+            <td class="nowrap">@item.TotalAmount.ToString("N2") ₽</td>
+            <td class="table-actions-col">
+                <div class="table-actions">
+                    <a class="btn secondary" asp-action="Details" asp-route-id="@item.Id">Подробнее</a>
+                    <form asp-action="Complete" asp-route-id="@item.Id" method="post">
+                        <button class="btn" type="submit">Выполнить</button>
+                    </form>
+                </div>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

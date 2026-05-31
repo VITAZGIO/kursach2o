@@ -1,0 +1,4 @@
+@model OrderItem
+@{ ViewData["Title"] = "Удалить позицию"; }
+<h1>Удалить позицию заказа</h1>
+<div class="content-block"><p>Вы действительно хотите удалить позицию <strong>@Model.FurnitureItem?.Name</strong> из заказа №@Model.OrderId?</p><form asp-action="Delete" method="post"><input type="hidden" asp-for="Id" /><button class="btn danger" type="submit">Удалить</button> <a class="btn secondary" asp-controller="Orders" asp-action="Details" asp-route-id="@Model.OrderId">Назад</a></form></div>

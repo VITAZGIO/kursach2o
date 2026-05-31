@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Мебельный магазин</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    @{
+        var role = Context.Session.GetString("Role");
+        var fullName = Context.Session.GetString("FullName");
+        var isAdmin = role == "Admin";
+        var isUser = role == "User";
+        var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+        var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+        string Active(string controller, string? action = null)
+        {
+            var controllerMatch = string.Equals(currentController, controller, StringComparison.OrdinalIgnoreCase);
+            var actionMatch = action == null || string.Equals(currentAction, action, StringComparison.OrdinalIgnoreCase);
+            return controllerMatch && actionMatch ? "active" : "";
+        }
+    }
+
+    <header class="topbar">
+        <div class="topbar-inner">
+            <a class="brand" asp-controller="Home" asp-action="Index">Мебельный магазин</a>
+            <div class="topbar-spacer"></div>
+            @if (!string.IsNullOrWhiteSpace(fullName))
+            {
+                <div class="user-chip">
+                    <span>@fullName</span>
+                    <strong>@(isAdmin ? "Администратор" : "Пользователь")</strong>
+                </div>
+                <a class="topbar-link" asp-controller="Account" asp-action="Logout">Выход</a>
+            }
+            else
+            {
+                <div class="topbar-actions">
+                    <a class="topbar-link" asp-controller="Account" asp-action="Login">Вход</a>
+                    <a class="topbar-link" asp-controller="Account" asp-action="Register">Регистрация</a>
+                </div>
+            }
+        </div>
+    </header>
+
+    <div class="app-shell">
+        <aside class="sidebar">
+            <nav class="sidebar-nav">
+                <a class="@Active("Home")" asp-controller="Home" asp-action="Index">Главная</a>
+                <a class="@Active("FurnitureItems")" asp-controller="FurnitureItems" asp-action="Index">Каталог</a>
+                @if (isAdmin)
+                {
+                    <a class="@Active("Categories")" asp-controller="Categories" asp-action="Index">Категории</a>
+                    <a class="@Active("Manufacturers")" asp-controller="Manufacturers" asp-action="Index">Производители</a>
+                    <a class="@Active("Customers")" asp-controller="Customers" asp-action="Index">Клиенты</a>
+                    <a class="@Active("Orders", "Index")" asp-controller="Orders" asp-action="Index">Заказы</a>
+                    <a class="@Active("OrderHistory")" asp-controller="OrderHistory" asp-action="Index">История заказов</a>
+                }
+                else if (isUser)
+                {
+                    <a class="@Active("Cart")" asp-controller="Cart" asp-action="Index">Корзина</a>
+                    <a class="@Active("Orders", "My")" asp-controller="Orders" asp-action="My">Мои заказы</a>
+                }
+            </nav>
+        </aside>
+
+        <main class="page">
+            @RenderBody()
+        </main>
+    </div>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

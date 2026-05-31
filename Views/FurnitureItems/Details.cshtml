@@ -1,0 +1,35 @@
+@model FurnitureItem
+@{
+    ViewData["Title"] = "Подробнее";
+    var role = Context.Session.GetString("Role");
+    var isAdmin = role == "Admin";
+    var isUser = role == "User";
+}
+
+<h1>@Model.Name</h1>
+<div class="content-block">
+    <img class="thumb" src="@(string.IsNullOrWhiteSpace(Model.ImagePath) ? "/images/Sofa.jpg" : Model.ImagePath)" alt="@Model.Name" />
+    <dl class="details-list">
+        <dt>Артикул</dt><dd>@Model.Article</dd>
+        <dt>Описание</dt><dd>@Model.Description</dd>
+        <dt>Категория</dt><dd>@Model.Category?.Name</dd>
+        <dt>Производитель</dt><dd>@Model.Manufacturer?.Name</dd>
+        <dt>Материал</dt><dd>@Model.Material</dd>
+        <dt>Цвет</dt><dd>@Model.Color</dd>
+        <dt>Размер</dt><dd>@Model.Size</dd>
+        <dt>Цена</dt><dd>@Model.Price.ToString("N2") ₽</dd>
+        <dt>Остаток</dt><dd>@Model.StockQuantity</dd>
+    </dl>
+    @if (isAdmin)
+    {
+        <a class="btn" asp-action="Edit" asp-route-id="@Model.Id">Изменить</a>
+    }
+    @if (isUser)
+    {
+        <form asp-controller="Cart" asp-action="Add" method="post">
+            <input type="hidden" name="furnitureItemId" value="@Model.Id" />
+            <button class="btn" type="submit">В корзину</button>
+        </form>
+    }
+    <a class="btn secondary" asp-action="Index">Назад</a>
+</div>

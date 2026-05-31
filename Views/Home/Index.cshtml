@@ -1,0 +1,94 @@
+@model HomeViewModel
+@{
+    ViewData["Title"] = "Главная";
+}
+
+<section class="hero">
+    <div class="hero-content">
+        <h1>Мебель для дома с доставкой</h1>
+        <p>Каталог мебели, учет заказов и клиентов в одной информационной системе.</p>
+        <div class="hero-actions">
+            <a class="btn" asp-controller="FurnitureItems" asp-action="Index">Перейти в каталог</a>
+            <a class="btn secondary" asp-controller="FurnitureItems" asp-action="Index">Посмотреть товары</a>
+        </div>
+    </div>
+</section>
+
+<section class="feature-grid">
+    <div class="feature-card">
+        <h3>Широкий ассортимент</h3>
+        <p>Диваны, кровати, столы и шкафы для разных комнат и задач.</p>
+    </div>
+    <div class="feature-card">
+        <h3>Быстрое оформление заказа</h3>
+        <p>Пользователь добавляет мебель в корзину и оформляет покупку за несколько шагов.</p>
+    </div>
+    <div class="feature-card">
+        <h3>Контроль остатков</h3>
+        <p>Система показывает наличие мебели на складе и товары с малым остатком.</p>
+    </div>
+    <div class="feature-card">
+        <h3>Удобная работа с клиентами</h3>
+        <p>Администратор видит клиентов, заказы и историю продаж магазина.</p>
+    </div>
+</section>
+
+<section class="content-block">
+    <h2>Популярные категории</h2>
+    <div class="category-grid">
+        <div class="category-card">Диваны</div>
+        <div class="category-card">Кровати</div>
+        <div class="category-card">Столы</div>
+        <div class="category-card">Шкафы</div>
+    </div>
+    <p class="promo-text">
+        Наш магазин предлагает мебель для гостиной, спальни, кухни и рабочего кабинета. В системе можно быстро подобрать товар,
+        проверить наличие на складе и оформить заказ.
+    </p>
+</section>
+
+<section class="stats-grid">
+    <div class="stat-card"><span>Товары</span><strong>@Model.FurnitureCount</strong></div>
+    <div class="stat-card"><span>Категории</span><strong>@Model.CategoryCount</strong></div>
+    <div class="stat-card"><span>Производители</span><strong>@Model.ManufacturerCount</strong></div>
+    <div class="stat-card"><span>Клиенты</span><strong>@Model.CustomerCount</strong></div>
+    <div class="stat-card"><span>Заказы</span><strong>@Model.OrderCount</strong></div>
+</section>
+
+<section class="content-block">
+    <div class="section-title">
+        <h2>Мебель с малым остатком</h2>
+        <a class="btn" asp-controller="FurnitureItems" asp-action="Index">Открыть каталог</a>
+    </div>
+
+    @if (Model.LowStockItems.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Название</th>
+                    <th>Артикул</th>
+                    <th>Категория</th>
+                    <th>Производитель</th>
+                    <th>Остаток</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model.LowStockItems)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Article</td>
+                    <td>@item.Category?.Name</td>
+                    <td>@item.Manufacturer?.Name</td>
+                    <td><span class="badge danger">@item.StockQuantity</span></td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>Товаров с малым остатком нет.</p>
+    }
+</section>
